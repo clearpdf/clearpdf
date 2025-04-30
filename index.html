@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Viewer</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <aside class="sidebar">
+            <div class="upload-section">
+                <input type="file" id="file-input" accept="application/pdf" multiple style="display: none;">
+                <button id="upload-button">Upload PDF</button>
+            </div>
+            
+            <div class="pdf-thumbnails">
+                <h3>PDF Files</h3>
+                <div id="thumbnails-container">
+                    <p class="empty-thumbnails">No PDFs uploaded yet</p>
+                </div>
+            </div>
+        </aside>
+        
+        <main class="viewer">
+            <div class="toolbar">
+                <div class="pagination">
+                    <button id="prev-page" disabled>◀ Prev</button>
+                    <span id="page-info">Page <span id="page-num">0</span> of <span id="page-count">0</span></span>
+                    <button id="next-page" disabled>Next ▶</button>
+                </div>
+                
+                <div class="view-controls">
+                    <div class="zoom-controls">
+                        <button id="zoom-out" title="Zoom out">−</button>
+                        <span id="zoom-level">100%</span>
+                        <button id="zoom-in" title="Zoom in">+</button>
+                        <button id="zoom-reset" title="Reset zoom">Reset</button>
+                    </div>
+                    <div class="rotate-controls">
+                        <button id="rotate-ccw" title="Rotate counterclockwise">↺</button>
+                        <button id="rotate-cw" title="Rotate clockwise">↻</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="pdf-container">
+                <canvas id="pdf-viewer"></canvas>
+            </div>
+            
+            <div id="no-pdf-message">
+                <p>No PDF selected. Please upload and select a PDF to view.</p>
+            </div>
+        </main>
+        
+        <!-- Add the new vertical tools panel -->
+        <aside class="tools-panel">
+            <div class="tools-header">
+                <h4>PDF Tools</h4>
+            </div>
+            <div class="tools-list">
+                <button class="tool-button" title="Merge PDFs" id="merge-pdfs">
+                    <div class="tool-icon merge-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <path d="M15 2H9a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"></path>
+                            <path d="M12 11v6"></path>
+                            <path d="M9 14h6"></path>
+                        </svg>
+                    </div>
+                    <span>Merge</span>
+                </button>
+                <button class="tool-button" id="compress-tool" title="Compress PDF">
+                    <div class="tool-icon compress-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+                    <span>Compress</span>
+                </button>
+                <!-- The compression options need to be immediately after the button for the CSS selector to work -->
+                <div id="compression-options" class="tool-options">
+                    <div class="options-header">
+                        <h5>Compress PDF</h5>
+                    </div>
+                    <div class="options-list">
+                        <button class="option-button" data-size="0.5">Under 512 KB</button>
+                        <button class="option-button" data-size="1">Under 1 MB</button>
+                        <button class="option-button" data-size="2">Under 2 MB</button>
+                        <button class="option-button" data-size="5">Under 5 MB</button>
+                        <div class="custom-option">
+                            <div class="input-with-label">
+                                <input type="number" id="custom-size" placeholder="Size" min="1" step="1">
+                                <span class="input-label">MB</span>
+                            </div>
+                            <button id="custom-size-btn">OK</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- <button class="tool-button" title="Split PDF">
+                    <div class="tool-icon split-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 2v20"></path>
+                            <path d="M7 2v20"></path>
+                            <path d="M2 12h10"></path>
+                            <path d="M12 12h10"></path>
+                        </svg>
+                    </div>
+                    <span>Split</span>
+                </button>
+                <button class="tool-button" title="Extract Pages">
+                    <div class="tool-icon extract-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                        </svg>
+                    </div>
+                    <span>Extract</span>
+                </button> -->
+                <button class="tool-button" id="reorder-tool" title="Reorder Pages">
+                    <div class="tool-icon reorder-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="4" rx="1"></rect>
+                            <rect x="3" y="10" width="18" height="4" rx="1"></rect>
+                            <rect x="3" y="17" width="18" height="4" rx="1"></rect>
+                            <path d="M9 7v10M15 17V7"></path>
+                            <polyline points="7 5 9 3 11 5"></polyline>
+                            <polyline points="13 19 15 21 17 19"></polyline>
+                        </svg>
+                    </div>
+                    <span>Reorder</span>
+                </button>
+                <button class="tool-button" id="ocr-tool" title="OCR - Convert PDF to searchable text">
+                    <div class="tool-icon ocr-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="7" y1="7" x2="17" y2="7"></line>
+                            <line x1="7" y1="12" x2="17" y2="12"></line>
+                            <line x1="7" y1="17" x2="13" y2="17"></line>
+                            <circle cx="17" cy="17" r="3"></circle>
+                            <line x1="18.5" y1="18.5" x2="21" y2="21"></line>
+                        </svg>
+                    </div>
+                    <span>OCR</span>
+                </button>
+                <!-- Add new Workflow button -->
+                <button class="tool-button" id="workflow-tool" title="PDF Workflow - Manage multiple PDFs">
+                    <div class="tool-icon workflow-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="9" y1="3" x2="9" y2="21"></line>
+                            <line x1="15" y1="3" x2="15" y2="21"></line>
+                            <line x1="3" y1="9" x2="21" y2="9"></line>
+                            <line x1="3" y1="15" x2="21" y2="15"></line>
+                        </svg>
+                    </div>
+                    <span>Workflow</span>
+                </button>
+                <!-- <button class="tool-button" title="Convert PDF">
+                    <div class="tool-icon convert-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4v16"></path>
+                            <path d="M16 4l4 4-4 4"></path>
+                            <path d="M20 8H4"></path>
+                            <path d="M20 20v-8"></path>
+                            <path d="M8 20l-4-4 4-4"></path>
+                            <path d="M4 16h16"></path>
+                        </svg>
+                    </div>
+                    <span>Convert</span>
+                </button> -->
+            </div>
+        </aside>
+    </div>
+    
+    <script src="renderer.js"></script>
+    <!-- Add the merge.js script -->
+    <script src="./features/merge.js"></script>
+    <!-- Add the compress.js script -->
+    <script src="./features/compress.js"></script>
+    <!-- Add the OCR script -->
+    <!-- <script src="./features/ocr.js"></script> -->
+    <!-- Add the Workflow script -->
+    <!-- <script src="./features/workflow.js"></script> -->
+    <!-- Add event listener for merge button -->
+    <script>
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     // Connect merge button to MergeTool
+        //     const mergeButton = document.getElementById('merge-pdfs');
+        //     if (mergeButton) {
+        //         mergeButton.addEventListener('click', () => {
+        //             console.log('Merge button clicked');
+        //             // Add a small delay to ensure MergeTool is fully loaded
+        //             setTimeout(() => {
+        //                 if (window.MergeTool && typeof window.MergeTool.activateMergeMode === 'function') {
+        //                     console.log('Calling MergeTool.activateMergeMode()');
+        //                     window.MergeTool.activateMergeMode();
+        //                 } else {
+        //                     console.error('MergeTool not available or activateMergeMode is not a function');
+        //                     console.log('Available on window:', Object.keys(window).join(', '));
+        //                     if (window.MergeTool) {
+        //                         console.log('MergeTool methods:', Object.keys(window.MergeTool).join(', '));
+        //                     }
+                            
+        //                     // Try to initialize MergeTool if it exists but wasn't initialized
+        //                     if (window.MergeTool && typeof window.MergeTool.init === 'function') {
+        //                         window.MergeTool.init();
+        //                         if (typeof window.MergeTool.activateMergeMode === 'function') {
+        //                             window.MergeTool.activateMergeMode();
+        //                         }
+        //                     }
+        //                 }
+        //             }, 100);
+        //         });
+        //     } else {
+        //         console.error('Merge button not found');
+        //     }
+        // });
+    </script>
+</body>
+</html>

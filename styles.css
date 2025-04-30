@@ -1,0 +1,2754 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  color: #333;
+  background-color: #f5f7fa;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Header styles */
+header {
+  background-color: #fff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e1e4e8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #2D3748;
+}
+
+#file-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px;
+}
+
+#file-input {
+  display: none;
+}
+
+button, #upload-button {
+  background-color: #4a6cf7;
+  color: black;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+button:hover, #upload-button:hover {
+  background-color: #3a5ce5;
+}
+
+button:disabled {
+  background-color: #a0aec0;
+  cursor: not-allowed;
+}
+
+.page-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+#page-info {
+  font-size: 14px;
+  color: #4a5568;
+}
+
+#zoom-select {
+  padding: 6px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  background-color: white;
+}
+
+/* Main content area */
+#main-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 250px;
+  background-color: #fff;
+  border-right: 1px solid #e0e4e8;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+.pdf-title{
+  max-width: 10rem;
+}
+
+.upload-section {
+  padding: 20px;
+  border-bottom: 1px solid #e0e4e8;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+#file-input {
+  display: none;
+}
+
+#upload-button {
+  width: 100%;
+  padding: 10px 16px;
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: auto !important;
+  max-width: 200px !important;
+  margin: 0 auto;
+  display: block;
+}
+
+#upload-button:hover {
+  background-color: #3a5ce5;
+}
+
+.pdf-thumbnails {
+  margin-top: 20px;
+  overflow-y: auto;
+  max-height: calc(100vh - 150px);
+  padding: 0 10px;
+}
+
+.pdf-thumbnails h3 {
+  margin: 10px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #555;
+  padding-left: 5px;
+}
+
+#thumbnails-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.thumbnail-item {
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-right: 24px; /* Make space for the edit icon */
+}
+
+.thumbnail-item:hover {
+  background-color: #f0f5ff;
+}
+
+.thumbnail-item.selected {
+  background-color: #e6effe;
+  box-shadow: 0 0 0 2px #4a6cf7;
+}
+
+.thumbnail-canvas {
+  border: 1px solid #e0e4e8;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 100px;
+  height: 140px;
+  object-fit: contain;
+}
+
+.thumbnail-name {
+  margin-top: 8px;
+  font-size: 13px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  width: 100%;
+  display: inline-block;
+  margin-right: 5px;
+  max-width: calc(100% - 24px);
+}
+
+.empty-thumbnails {
+  text-align: center;
+  color: #999;
+  padding: 20px 10px;
+  font-size: 14px;
+}
+
+/* Content area styles */
+#content-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+#pdf-container {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#pdf-viewer {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+#pdf-canvas {
+  background-color: white;
+}
+
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+#no-pdf-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9fafb;
+  z-index: 5;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* width: 400px; */
+  /* max-width: 90%; */
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 8px;
+}
+
+.empty-state p {
+  color: #718096;
+  margin-bottom: 24px;
+}
+
+.upload-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.primary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.primary-button:hover {
+  background-color: #3a5ce5;
+}
+
+.primary-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+.drop-text {
+  color: #a0aec0;
+  font-size: 14px;
+}
+
+#no-pdf-message.drag-over {
+  background-color: rgba(74, 108, 247, 0.05);
+}
+
+#no-pdf-message.drag-over .empty-state {
+  box-shadow: 0 0 0 2px #4a6cf7, 0 4px 20px rgba(74, 108, 247, 0.15);
+}
+
+/* Drop zone */
+#drop-zone {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(74, 108, 247, 0.2);
+  border: 4px dashed #4a6cf7;
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: #4a6cf7;
+  font-weight: bold;
+}
+
+/* Dialog styles */
+.dialog {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 200;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog-content {
+  background-color: white;
+  padding: 25px;
+  border-radius: 8px;
+  min-width: 300px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dialog h3 {
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.dialog input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Viewer styles */
+.viewer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.toolbar {
+  padding: 15px 20px;
+  background-color: white;
+  border-bottom: 1px solid #e0e4e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.pagination, .zoom-controls, .rotate-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.toolbar button {
+  padding: 8px 12px;
+  background-color: #f0f2f5;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+  color: #4a5568;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toolbar button:hover {
+  background-color: #e6e8eb;
+  border-color: #b0b5c3;
+  color: #2d3748;
+}
+
+.toolbar button:active {
+  background-color: #d9dde3;
+  transform: translateY(1px);
+}
+
+.toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f0f2f5;
+  color: #a0aec0;
+}
+
+.toolbar span {
+  font-size: 14px;
+  color: #4a5568;
+  padding: 0 5px;
+}
+
+.rotate-controls button {
+  font-size: 16px;
+  padding: 7px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#zoom-in, #zoom-out, #rotate-cw, #rotate-ccw {
+  background-color: #edf2ff;
+  color: #4a6cf7;
+  border-color: #d0dcff;
+}
+
+#zoom-in:hover, #zoom-out:hover, #rotate-cw:hover, #rotate-ccw:hover {
+  background-color: #dbe4ff;
+  color: #3a5ce5;
+}
+
+#zoom-reset {
+  background-color: #f7f7f7;
+  font-size: 13px;
+}
+
+#pdf-container {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#pdf-viewer {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+#no-pdf-message {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+  color: #8c8c8c;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.loading-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  z-index: 10;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Add this to your existing CSS */
+
+.view-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.rotate-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rotate-controls button {
+  font-size: 16px;
+  padding: 5px 10px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Add these styles to your existing CSS file */
+
+.thumbnail-actions {
+  display: flex;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #666;
+  transition: all 0.2s;
+}
+
+.action-button:hover {
+  background-color: #f0f5ff;
+  color: #4a6cf7;
+}
+
+.rename-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.rename-dialog {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 300px;
+}
+
+.rename-dialog h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.rename-dialog input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.rename-dialog input:focus {
+  border-color: #4a6cf7;
+  outline: none;
+}
+
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.dialog-button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancel-button {
+  background-color: #f1f5f9;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+.cancel-button:hover {
+  background-color: #e2e8f0;
+}
+
+.confirm-button {
+  background-color: #4a6cf7;
+  border: none;
+  color: white;
+}
+
+.confirm-button:hover {
+  background-color: #3a5ce5;
+}
+
+/* Make the hidden class stronger */
+.hidden {
+  display: none !important;
+}
+
+.page-loading-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  z-index: 10;
+  opacity: 0.8;
+}
+
+/* Tools Panel Styles */
+.tools-panel {
+  width: 80px;
+  background-color: #fff;
+  border-left: 1px solid #e0e4e8;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.03);
+  position: relative;
+}
+
+.tools-header {
+  padding: 15px 5px;
+  text-align: center;
+  border-bottom: 1px solid #e0e4e8;
+}
+
+.tools-header h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tools-list {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  gap: 5px;
+}
+
+.tool-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 5px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s ease;
+  width: 100%;
+  gap: 5px;
+}
+
+.tool-button:hover {
+  background-color: #f1f5f9;
+  color: #4a6cf7;
+}
+
+.tool-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tool-button span {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Update app container to include the tools panel */
+#app {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+/* Update viewer to maintain flex */
+.viewer {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Tool options styling for compression */
+#compression-options {
+  position: absolute;
+  right: 80px; /* Position to the left of the tools panel */
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  width: 200px;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: all 0.2s ease-in-out;
+  border: 1px solid #e0e4e8;
+  overflow: hidden;
+}
+
+#compression-options.show {
+  display: block;
+}
+
+/* Show options when compress tool is hovered */
+#compress-tool:hover + #compression-options,
+#compression-options:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.options-header {
+  padding: 10px 15px;
+  border-bottom: 1px solid #e0e4e8;
+}
+
+.options-header h5 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
+}
+
+.options-list {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.option-button {
+  padding: 8px 12px;
+  text-align: left;
+  background-color: #f8fafc;
+  border: 1px solid #e0e4e8;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #4a5568;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.option-button:hover {
+  background-color: #edf2ff;
+  border-color: #d0dcff;
+  color: #4a6cf7;
+}
+
+.custom-option {
+  display: flex;
+  gap: 5px;
+  padding: 5px 0;
+}
+
+#custom-size {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #e0e4e8;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+#custom-size:focus {
+  outline: none;
+  border-color: #4a6cf7;
+}
+
+#custom-size-btn {
+  padding: 6px 10px;
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#custom-size-btn:hover {
+  background-color: #3a5ce5;
+}
+
+/* Fix the position of compression options */
+.tools-panel {
+  position: relative;
+}
+
+/* Position the options panel correctly */
+/* #compression-options {
+  top: 132px; 
+} */
+
+/* Add these styles to your CSS file */
+
+/* Styling for the input with label */
+.input-with-label {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #e0e4e8;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.input-with-label:focus-within {
+  border-color: #4a6cf7;
+}
+
+/* Style for the input field */
+#custom-size {
+  width: 100%;
+  padding: 6px 30px 6px 8px;
+  border: none;
+  font-size: 13px;
+  outline: none;
+}
+
+/* Style for the MB label */
+.input-label {
+  position: absolute;
+  right: 8px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  user-select: none;
+}
+
+/* Make the OK button more compact */
+#custom-size-btn {
+  padding: 6px 10px;
+  background-color: #4a6cf7;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  min-width: 40px;
+}
+
+#custom-size-btn:hover {
+  background-color: #3a5ce5;
+}
+
+/* CSS for inline editing */
+.thumbnail-name {
+  display: inline-block;
+  margin-right: 5px;
+  max-width: calc(100% - 24px);
+}
+
+.edit-icon {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 2px;
+  color: #8c8c8c;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  /* position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%); */
+}
+
+.edit-icon:hover {
+  opacity: 1;
+  color: #4a6cf7;
+}
+
+.inline-edit-input {
+  width: calc(100% - 30px);
+  padding: 4px 6px;
+  border: 1px solid #d0dcff;
+  border-radius: 3px;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.inline-edit-input:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.15);
+}
+
+.inline-save-btn {
+  background: none;
+  border: none;
+  color: #4a6cf7;
+  cursor: pointer;
+  padding: 2px;
+}
+
+.inline-save-btn:hover {
+  color: #3a5ce5;
+}
+
+/* Updated CSS for inline editing */
+.thumbnail-item {
+  position: relative;
+}
+
+.thumbnail-name-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
+.thumbnail-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.edit-icon {
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 2px;
+  color: #8c8c8c;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+}
+
+.edit-icon:hover {
+  opacity: 1;
+  color: #4a6cf7;
+}
+
+.inline-edit-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inline-edit-input {
+  flex: 1;
+  padding: 4px 6px;
+  border: 1px solid #d0dcff;
+  border-radius: 3px;
+  font-size: 12px;
+  margin-right: 4px;
+}
+
+.inline-edit-input:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 2px rgba(74, 108, 247, 0.15);
+}
+
+.inline-save-btn {
+  background: none;
+  border: none;
+  color: #4a6cf7;
+  cursor: pointer;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline-save-btn:hover {
+  color: #3a5ce5;
+}
+
+/* Add this to your styles.css file */
+.reorder-panel {
+position: fixed;
+right: 0;
+top: 0;
+height: 100vh;
+width: 20%;
+background-color: #f8f9fa;
+border-left: 1px solid #dee2e6;
+display: flex;
+flex-direction: column;
+padding: 15px;
+box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+z-index: 100;
+transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.reorder-panel.hidden {
+opacity: 0;
+transform: translateX(100%);
+}
+
+.reorder-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 10px;
+}
+
+.reorder-header h4 {
+margin: 0;
+font-weight: 500;
+}
+
+.close-button {
+background: none;
+border: none;
+cursor: pointer;
+font-size: 18px;
+color: #666;
+}
+
+.close-button:hover {
+color: #333;
+}
+
+.reorder-preview {
+flex: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #fff;
+border: 1px solid #ddd;
+border-radius: 5px;
+margin-bottom: 15px;
+overflow: hidden;
+}
+
+#reorder-preview-canvas {
+max-width: 100%;
+max-height: 100%;
+}
+
+.reorder-instructions {
+text-align: center;
+margin-bottom: 15px;
+font-size: 14px;
+color: #666;
+margin: 10px 0;
+font-style: italic;
+}
+
+.reorder-actions {
+display: flex;
+gap: 10px;
+margin-top: auto;
+background-color: #f5f5f5;
+padding: 15px;
+border-radius: 5px;
+margin-bottom: 15px;
+box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+width: auto;
+max-width: 300px; /* Limit width */
+}
+
+.reorder-actions .primary-button {
+width: auto; /* Don't stretch */
+min-width: 100px;
+max-width: 200px;
+padding: 8px 16px;
+background-color: #4a90e2;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+/* General button constraints to prevent stretching */
+.primary-button, .dialog-button {
+width: auto !important;
+max-width: 200px !important;
+}
+
+.button-container {
+display: flex;
+justify-content: center; /* Center the button */
+width: 100%;
+}
+
+.primary-button {
+background-color: #4285f4;
+color: white;
+border: none;
+}
+
+.primary-button:hover {
+background-color: #3367d6;
+}
+
+#save-current-reorder {
+background-color: white;
+border: 1px solid #ddd;
+}
+
+#save-current-reorder:hover {
+background-color: #f5f5f5;
+}
+
+/* Styles for draggable thumbnails */
+.page-thumbnail-item.draggable {
+position: relative;
+/* width: 150px; */
+/* min-height: 200px; */
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+border: 1px solid #e0e0e0;
+border-radius: 8px;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+cursor: grab;
+transition: all 0.3s ease;
+background: white;
+}
+
+.page-thumbnail-item.draggable:hover {
+transform: translateY(-4px);
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.page-thumbnail-canvas {
+width: 100%;
+height: 180px;
+object-fit: contain;
+background-color: #fafafa;
+}
+
+.page-number {
+padding: 10px;
+background-color: #f8f9fa;
+border-top: 1px solid #eaeaea;
+text-align: center;
+font-size: 14px;
+font-weight: 500;
+color: #444;
+}
+
+/* .drag-handle {
+position: absolute;
+top: 8px;
+right: 8px;
+color: rgba(0, 0, 0, 0.3);
+font-size: 16px;
+cursor: grab;
+padding: 4px;
+border-radius: 4px;
+background-color: rgba(255, 255, 255, 0.8);
+transition: all 0.2s ease;
+}
+
+.drag-handle:hover {
+color: rgba(0, 0, 0, 0.5);
+background-color: rgba(255, 255, 255, 0.95);
+} */
+
+.original-page-number {
+position: absolute;
+bottom: 8px;
+right: 8px;
+font-size: 11px;
+color: #666;
+background-color: rgba(255, 255, 255, 0.9);
+padding: 3px 6px;
+border-radius: 4px;
+border: 1px solid rgba(0, 0, 0, 0.1);
+font-weight: 500;
+}
+
+.page-thumbnail {
+flex: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 180px;
+padding: 12px;
+background-color: #fafafa;
+}
+
+/* Add these to your CSS */
+/* .page-thumbnail-item.draggable {
+cursor: grab !important;
+user-select: none;
+}
+
+.page-thumbnail-item.draggable:hover {
+transform: translateY(-3px);
+box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+} */
+
+.page-thumbnail-item.dragging {
+cursor: grabbing !important;
+opacity: 0.7;
+transform: scale(1.03);
+box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+z-index: 1000;
+}
+
+.page-item.dragging .page-number {
+display: none;
+}
+
+.reorder-mode .page-number,
+.page-item.dragging .page-number {
+display: none;
+}
+
+.page-item.dragging {
+cursor: grabbing !important;
+opacity: 0.7;
+transform: scale(1.03);
+box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+z-index: 1000;
+}
+
+.page-item {
+position: relative;
+width: 150px;
+min-height: 200px;
+box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+border: 1px solid #e0e4e8;
+border-radius: 8px;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+cursor: grab;
+transition: all 0.3s ease;
+background-color: white;
+}
+
+.page-item:hover {
+transform: translateY(-5px);
+box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.page-item.selected {
+border: 2px solid #4a6cf7;
+}
+
+
+.original-page-number {
+position: absolute;
+bottom: 5px;
+left: 5px;
+background-color: rgba(0, 0, 0, 0.7);
+color: white;
+border-radius: 12px;
+padding: 2px 8px;
+font-size: 12px;
+font-weight: 600;
+z-index: 5;
+}
+
+.page-thumbnail {
+flex: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 180px;
+padding: 12px;
+background-color: #fafafa;
+}
+
+/* Add these to your CSS */
+/* .page-thumbnail-item.draggable {
+cursor: grab !important;
+user-select: none;
+}
+
+.page-thumbnail-item.draggable:hover {
+transform: translateY(-3px);
+box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+} */
+
+.page-thumbnail-item.dragging {
+cursor: grabbing !important;
+opacity: 0.7;
+transform: scale(1.03);
+box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.page-thumbnail-item.drag-over {
+border: 2px dashed #4285f4;
+}
+
+.pdf-pages-container {
+height: 30%;
+width: 100%;
+background-color: #f5f7fa;
+overflow: auto hidden;
+white-space: nowrap;
+padding: 20px;
+box-sizing: border-box;
+display: flex;
+flex-direction: row;
+justify-content: flex-start;
+align-items: center;
+gap: 20px;
+border-top: 1px solid #e0e4e8;
+border-bottom: 1px solid #e0e4e8;
+box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.pdf-pages-container::-webkit-scrollbar {
+height: 8px;
+}
+
+.pdf-pages-container::-webkit-scrollbar-track {
+background: #f1f1f1;
+border-radius: 4px;
+}
+
+.pdf-pages-container::-webkit-scrollbar-thumb {
+background: #c1c1c1;
+border-radius: 4px;
+}
+
+.pdf-pages-container::-webkit-scrollbar-thumb:hover {
+background: #a1a1a1;
+}
+
+/* Responsive adjustments for thumbnail containers */
+@media (max-width: 768px) {
+.pdf-pages-container.reorder-active {
+  gap: 40px;
+}
+}
+
+/* Default vertical layout for normal mode */
+#thumbnails-container {
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+/* Switch to horizontal layout when in reorder mode */
+#thumbnails-container.reorder-mode {
+display: flex;
+flex-direction: row !important; /* Important to override any other styles */
+flex-wrap: nowrap !important; /* Prevent wrapping to new rows */
+gap: 80px;
+padding: 15px 0;
+overflow-x: auto; /* Enable horizontal scrolling */
+overflow-y: hidden; /* Disable vertical scrolling */
+align-items: center;
+min-height: 200px;
+width: 100%;
+}
+
+/* Make sure thumbnails don't grow/shrink in reorder mode */
+#thumbnails-container.reorder-mode .page-thumbnail-item {
+flex: 0 0 auto;
+margin-bottom: 0;
+transition: transform 0.2s ease;
+}
+
+/* Style the scrollbar for better visibility in reorder mode */
+#thumbnails-container.reorder-mode::-webkit-scrollbar {
+height: 8px;
+}
+
+#thumbnails-container.reorder-mode::-webkit-scrollbar-thumb {
+background-color: #bbb;
+border-radius: 4px;
+}
+
+#thumbnails-container.reorder-mode::-webkit-scrollbar-thumb:hover {
+background-color: #999;
+}
+
+/* Add these styles to your CSS */
+.original-page-number {
+position: absolute;
+bottom: 5px;
+left: 5px;
+background-color: rgba(0, 0, 0, 0.7);
+color: white;
+border-radius: 12px;
+padding: 2px 8px;
+font-size: 12px;
+font-weight: 600;
+z-index: 5;
+}
+
+/* Confirmation dialog styles */
+.dialog-overlay {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+.confirmation-dialog {
+background-color: white;
+border-radius: 8px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+width: 400px;
+max-width: 90%;
+}
+
+.dialog-header {
+padding: 15px 20px;
+border-bottom: 1px solid #eee;
+}
+
+.dialog-header h3 {
+margin: 0;
+font-weight: 500;
+font-size: 18px;
+color: #333;
+}
+
+.dialog-body {
+padding: 20px;
+}
+
+.dialog-body p {
+margin: 0;
+color: #555;
+}
+
+.dialog-footer {
+padding: 15px 20px;
+display: flex;
+justify-content: flex-end;
+gap: 10px;
+border-top: 1px solid #eee;
+}
+
+.dialog-button {
+padding: 8px 16px;
+border-radius: 4px;
+border: 1px solid #ddd;
+background-color: white;
+cursor: pointer;
+font-size: 14px;
+}
+
+.dialog-button.primary-button {
+background-color: #4285f4;
+border-color: #4285f4;
+color: white;
+}
+
+.dialog-button:hover {
+opacity: 0.9;
+}
+
+/* Add these styles for the notification */
+.notification {
+position: fixed;
+bottom: 20px;
+right: 20px;
+padding: 10px 15px;
+border-radius: 4px;
+background-color: #4caf50;
+color: white;
+font-size: 14px;
+box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+z-index: 1000;
+opacity: 1;
+transition: opacity 0.3s ease;
+}
+
+.notification.error {
+background-color: #f44336;
+}
+
+.notification.hide {
+opacity: 0;
+}
+
+/* Additional CSS for SortableJS */
+.page-thumbnail-item {
+transition: background-color 0.15s;
+}
+
+.sortable-ghost {
+opacity: 0.4;
+background-color: #c8e6ff;
+}
+
+.sortable-drag {
+opacity: 0.8;
+cursor: grabbing;
+box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.sortable-chosen {
+background-color: #e6f0ff;
+}
+
+/* .drag-handle {
+position: absolute;
+top: 5px;
+right: 5px;
+background-color: rgba(255, 255, 255, 0.8);
+border-radius: 4px;
+padding: 3px;
+cursor: grab;
+z-index: 10;
+box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+} */
+
+/* Layout for reorder mode */
+#thumbnails-container.reorder-mode {
+display: flex;
+flex-direction: row !important;
+flex-wrap: nowrap !important;
+gap: 80px;
+padding: 15px;
+overflow-x: auto;
+overflow-y: hidden;
+}
+
+/* Additional CSS for Muuri Grid */
+
+/* Reorder mode container */
+#thumbnails-container.reorder-mode {
+position: relative;
+display: flex;
+flex-direction: row !important;
+flex-wrap: nowrap !important;
+gap: 20px;
+padding: 20px 0;
+overflow-x: auto;
+overflow-y: hidden;
+min-height: 200px;
+}
+
+/* Item styling */
+.muuri-item {
+position: absolute; /* Required by Muuri */
+z-index: 1;
+margin: 0; /* Reset any existing margins */
+}
+
+.muuri-item.muuri-item-dragging {
+z-index: 3;
+cursor: grabbing !important;
+}
+
+.muuri-item.muuri-item-releasing {
+z-index: 2;
+}
+
+.muuri-item.muuri-item-hidden {
+z-index: 0;
+}
+
+/* Item content wrapper */
+.muuri-item-content {
+position: relative;
+width: 100%;
+height: 100%;
+}
+
+/* Drag handle */
+.drag-handle {
+position: absolute;
+top: 8px;
+right: 8px;
+color: rgba(0, 0, 0, 0.5);
+font-size: 16px;
+cursor: grab;
+padding: 4px;
+border-radius: 4px;
+background-color: rgba(255, 255, 255, 0.8);
+transition: all 0.2s ease;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.drag-handle:hover {
+color: #4a6cf7;
+background-color: rgba(255, 255, 255, 0.95);
+transform: scale(1.1);
+}
+
+/* Page numbers */
+.original-page-number {
+position: absolute;
+bottom: 5px;
+left: 5px;
+background-color: rgba(0, 0, 0, 0.7);
+color: white;
+border-radius: 12px;
+padding: 2px 8px;
+font-size: 12px;
+font-weight: 600;
+z-index: 5;
+}
+
+/* Action buttons container */
+.reorder-actions {
+position: sticky;
+bottom: 0;
+background-color: #f8f9fa;
+padding: 15px;
+border-top: 1px solid #dee2e6;
+z-index: 10;
+display: flex;
+flex-direction: column;
+gap: 10px;
+}
+
+.reorder-actions.hidden {
+display: none;
+}
+
+/* Dialog overlay */
+.dialog-overlay {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+/* Notification */
+.notification {
+position: fixed;
+bottom: 20px;
+right: 20px;
+padding: 10px 15px;
+border-radius: 4px;
+background-color: #4caf50;
+color: white;
+font-size: 14px;
+box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+z-index: 1000;
+opacity: 1;
+transition: opacity 0.3s ease;
+}
+
+.notification.error {
+background-color: #f44336;
+}
+
+.notification.hide {
+opacity: 0;
+}
+
+.draggable-item {
+cursor: move;
+box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+transition: box-shadow 0.2s ease;
+}
+
+.draggable-item:hover {
+box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+}
+
+.draggable-item.dragging {
+opacity: 0.6;
+box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+}
+.page-thumbnail-item {
+position: relative;
+border: 1px solid #ddd;
+border-radius: 4px;
+margin-bottom: 10px;
+background-color: white;
+transition: transform 0.2s, box-shadow 0.2s;
+overflow: hidden;
+}
+
+.page-thumbnail {
+flex: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+min-height: 180px;
+padding: 10px;
+background-color: #fafafa;
+}
+
+.preview-nav-button.prev-button, .preview-nav-button.next-button{
+background-color: #4285f4 !important;
+}
+
+/* Warning dialog styles for merge functionality */
+.warning-dialog-overlay {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1100;
+}
+
+.warning-dialog {
+background-color: white;
+border-radius: 8px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+width: 400px;
+max-width: 90%;
+animation: dialog-appear 0.3s ease-out;
+}
+
+@keyframes dialog-appear {
+from {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+to {
+  opacity: 1;
+  transform: translateY(0);
+}
+}
+
+.warning-dialog-header {
+padding: 15px 20px;
+border-bottom: 1px solid #eee;
+display: flex;
+align-items: center;
+}
+
+.warning-dialog-header h3 {
+margin: 0;
+font-weight: 500;
+font-size: 18px;
+color: #e74c3c;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+
+.warning-dialog-header h3::before {
+content: "⚠️";
+font-size: 20px;
+}
+
+.warning-dialog-body {
+padding: 20px;
+}
+
+.warning-dialog-body p {
+margin: 0;
+color: #555;
+line-height: 1.5;
+}
+
+.warning-dialog-footer {
+padding: 15px 20px;
+display: flex;
+justify-content: flex-end;
+gap: 10px;
+border-top: 1px solid #eee;
+}
+
+.warning-dialog-button {
+padding: 8px 16px;
+border-radius: 4px;
+border: 1px solid #ddd;
+background-color: white;
+cursor: pointer;
+font-size: 14px;
+transition: all 0.2s;
+}
+
+.warning-dialog-button:hover {
+background-color: #f5f5f5;
+}
+
+.warning-dialog-button.continue {
+background-color: #e74c3c;
+border-color: #e74c3c;
+color: white;
+}
+
+.warning-dialog-button.continue:hover {
+background-color: #c0392b;
+}
+
+.warning-dialog-button.cancel {
+background-color: #f8f9fa;
+color: #333;
+}
+
+.warning-dialog-button.cancel:hover {
+background-color: #e9ecef;
+}
+
+/* Loading indicator */
+#loading-indicator {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: none;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+z-index: 1000;
+}
+
+.loading-spinner {
+border: 5px solid #f3f3f3;
+border-top: 5px solid #3498db;
+border-radius: 50%;
+width: 50px;
+height: 50px;
+animation: spin 2s linear infinite;
+margin-bottom: 20px;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+#loading-indicator p {
+color: white;
+font-size: 18px;
+}
+
+/* OCR Overlay Styles */
+#ocr-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: white;
+z-index: 1000;
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
+
+#ocr-overlay.hidden {
+display: none;
+}
+
+#ocr-overlay .modal-content {
+background-color: white;
+padding: 20px;
+border-radius: 5px;
+width: 500px;
+max-width: 90%;
+max-height: 90vh;
+overflow-y: auto;
+}
+
+#ocr-overlay .modal-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 15px;
+}
+
+#ocr-overlay .modal-header h2 {
+margin: 0;
+}
+
+#ocr-overlay .close-button {
+background: none;
+border: none;
+font-size: 24px;
+cursor: pointer;
+}
+
+#ocr-overlay .form-group {
+margin-bottom: 15px;
+}
+
+#ocr-overlay label {
+display: block;
+margin-bottom: 5px;
+font-weight: bold;
+}
+
+#ocr-overlay select,
+#ocr-overlay input {
+width: 100%;
+padding: 8px;
+border: 1px solid #ccc;
+border-radius: 4px;
+}
+
+#ocr-overlay .page-selector {
+display: flex;
+gap: 10px;
+align-items: center;
+margin-bottom: 10px;
+}
+
+#ocr-overlay .page-selector input {
+width: 70px;
+}
+
+#ocr-overlay .button-group {
+display: flex;
+justify-content: space-between;
+margin-top: 20px;
+}
+
+#ocr-overlay .primary-button,
+#ocr-overlay .secondary-button {
+padding: 8px 16px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+#ocr-overlay .primary-button {
+background-color: #4CAF50;
+color: white;
+}
+
+#ocr-overlay .secondary-button {
+background-color: #f1f1f1;
+color: #333;
+}
+
+#ocr-loading {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 20px;
+}
+
+.ocr-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 20px;
+border-bottom: 1px solid #e0e0e0;
+background-color: #f5f5f5;
+}
+
+.ocr-header h2 {
+margin: 0;
+font-size: 1.5rem;
+color: #333;
+}
+
+.ocr-header-controls {
+display: flex;
+gap: 10px;
+}
+
+.ocr-header-controls button {
+display: flex;
+align-items: center;
+gap: 5px;
+padding: 8px 12px;
+border: 1px solid #ccc;
+border-radius: 4px;
+background-color: white;
+cursor: pointer;
+}
+
+.ocr-header-controls button svg {
+width: 16px;
+height: 16px;
+}
+
+.ocr-header-controls .primary-button {
+background-color: #4285f4;
+color: white;
+border-color: #4285f4;
+}
+
+.ocr-document-tabs {
+padding: 5px 10px;
+border-bottom: 1px solid #e0e0e0;
+background-color: #f9f9f9;
+overflow-x: auto;
+white-space: nowrap;
+}
+
+.ocr-tab-list {
+display: flex;
+gap: 5px;
+}
+
+.ocr-document-tab {
+padding: 5px 10px;
+border: 1px solid #ddd;
+border-radius: 4px;
+background-color: white;
+cursor: pointer;
+display: flex;
+align-items: center;
+gap: 5px;
+max-width: 200px;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+}
+
+.ocr-document-tab.active {
+border-color: #4285f4;
+background-color: #e8f0fe;
+}
+
+.ocr-document-tab .close-tab {
+margin-left: 5px;
+font-size: 14px;
+color: #999;
+}
+
+.ocr-content {
+display: flex;
+flex: 1;
+overflow: hidden;
+}
+
+.ocr-document-view {
+flex: 2;
+display: flex;
+flex-direction: column;
+border-right: 1px solid #e0e0e0;
+overflow: hidden;
+}
+
+.ocr-view-tabs {
+display: flex;
+border-bottom: 1px solid #e0e0e0;
+background-color: #f5f5f5;
+}
+
+.ocr-view-tab {
+padding: 10px 15px;
+border: none;
+background: none;
+cursor: pointer;
+font-weight: 500;
+}
+
+.ocr-view-tab.active {
+border-bottom: 2px solid #4285f4;
+color: #4285f4;
+}
+
+.ocr-pagination {
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 5px;
+border-bottom: 1px solid #e0e0e0;
+}
+
+.ocr-page-nav {
+background: none;
+border: 1px solid #ddd;
+border-radius: 4px;
+padding: 5px;
+cursor: pointer;
+}
+
+.ocr-page-nav svg {
+width: 16px;
+height: 16px;
+}
+
+#ocr-page-info {
+margin: 0 10px;
+font-size: 14px;
+}
+
+.ocr-view-content {
+flex: 1;
+overflow: auto;
+position: relative;
+}
+
+.ocr-view {
+display: none;
+height: 100%;
+}
+
+.ocr-view.active {
+display: block;
+}
+
+#ocr-preview-view {
+display: flex;
+justify-content: center;
+align-items: center;
+background-color: #f0f0f0;
+}
+
+#ocr-pdf-canvas {
+max-width: 100%;
+max-height: 100%;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#ocr-processing-indicator {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+text-align: center;
+background-color: rgba(255, 255, 255, 0.9);
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+#ocr-processing-indicator.hidden {
+display: none;
+}
+
+.spinner {
+border: 4px solid rgba(0, 0, 0, 0.1);
+border-radius: 50%;
+border-top: 4px solid #4285f4;
+width: 30px;
+height: 30px;
+animation: spin 1s linear infinite;
+margin: 0 auto 10px;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+.ocr-thumbnails-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+gap: 10px;
+padding: 15px;
+}
+
+.ocr-thumbnail {
+border: 1px solid #ddd;
+border-radius: 4px;
+padding: 5px;
+text-align: center;
+cursor: pointer;
+}
+
+.ocr-thumbnail.active {
+border-color: #4285f4;
+background-color: #e8f0fe;
+}
+
+.ocr-thumbnail img {
+max-width: 100%;
+height: auto;
+}
+
+.ocr-thumbnail-label {
+margin-top: 5px;
+font-size: 12px;
+}
+
+.ocr-text-panel {
+flex: 1;
+display: flex;
+flex-direction: column;
+overflow: hidden;
+}
+
+.ocr-text-tabs {
+display: flex;
+border-bottom: 1px solid #e0e0e0;
+background-color: #f5f5f5;
+}
+
+.ocr-text-tab {
+padding: 10px 15px;
+border: none;
+background: none;
+cursor: pointer;
+font-weight: 500;
+}
+
+.ocr-text-tab.active {
+border-bottom: 2px solid #4285f4;
+color: #4285f4;
+}
+
+.ocr-text-content {
+flex: 1;
+overflow: auto;
+}
+
+.ocr-text-view {
+display: none;
+padding: 15px;
+height: calc(100% - 30px);
+}
+
+.ocr-text-view.active {
+display: block;
+}
+
+#ocr-extracted-text {
+white-space: pre-wrap;
+font-family: monospace;
+font-size: 14px;
+line-height: 1.5;
+}
+
+.file-info-item {
+margin-bottom: 10px;
+display: flex;
+flex-direction: column;
+}
+
+.info-label {
+font-weight: bold;
+color: #666;
+font-size: 12px;
+}
+
+.info-value {
+font-size: 14px;
+}
+
+.ocr-actions {
+margin-top: 20px;
+border-top: 1px solid #e0e0e0;
+padding-top: 15px;
+}
+
+.ocr-actions h4 {
+margin-top: 0;
+margin-bottom: 10px;
+color: #333;
+}
+
+.ocr-action-buttons {
+display: flex;
+gap: 10px;
+}
+
+.ocr-action-button {
+display: flex;
+align-items: center;
+gap: 5px;
+padding: 8px 12px;
+border: 1px solid #ccc;
+border-radius: 4px;
+background-color: white;
+cursor: pointer;
+}
+
+.ocr-action-button svg {
+width: 16px;
+height: 16px;
+}
+
+.ocr-action-button.danger {
+color: #d93025;
+border-color: #d93025;
+}
+
+.ocr-text-controls {
+display: flex;
+justify-content: flex-end;
+gap: 10px;
+padding: 10px;
+border-top: 1px solid #e0e0e0;
+background-color: #f5f5f5;
+}
+
+.ocr-control-button {
+display: flex;
+align-items: center;
+gap: 5px;
+padding: 8px 12px;
+border: 1px solid #ccc;
+border-radius: 4px;
+background-color: white;
+cursor: pointer;
+}
+
+.ocr-control-button svg {
+width: 16px;
+height: 16px;
+}
+
+.ocr-footer {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 10px 20px;
+border-top: 1px solid #e0e0e0;
+background-color: #f5f5f5;
+font-size: 14px;
+color: #666;
+}
+
+#ocr-status-indicator {
+display: flex;
+align-items: center;
+gap: 5px;
+}
+
+.status-success {
+color: #0f9d58;
+}
+
+.status-error {
+color: #d93025;
+}
+
+.status-warning {
+color: #f4b400;
+}
+
+.status-info {
+color: #4285f4;
+}
+
+.loading-spinner {
+border: 5px solid #f3f3f3;
+border-top: 5px solid #3498db;
+border-radius: 50%;
+width: 50px;
+height: 50px;
+animation: spin 2s linear infinite;
+margin-bottom: 15px;
+}
+
+.preview-content{
+height: 30vh !important;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+#ocr-loading-message {
+margin-bottom: 15px;
+text-align: center;
+}
+
+.progress-bar-container {
+width: 14%;
+background-color: #f1f1f1;
+border-radius: 4px;
+overflow: hidden;
+}
+
+.progress-bar {
+height: 20px;
+background-color: #4CAF50;
+width: 0%;
+transition: width 0.3s ease;
+}
+
+/* Text layer styles for PDF.js */
+.text-layer {
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden !important; /* Force hidden overflow */
+  opacity: 0.2; /* Slightly visible for debugging but not distracting */
+  line-height: normal;
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  pointer-events: auto; /* Enable pointer events for selection */
+  mix-blend-mode: normal; /* Changed from multiply for better selection visibility */
+  z-index: 2;
+  transform-origin: 0% 0%;
+  /* Ensure exact positioning */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  clip-path: inset(0);
+  /* Ensure text layer has exact same dimensions as canvas */
+  /* width: 100% !important;
+  height: 100% !important; */
+}
+
+.text-layer > span {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0% !important;
+  max-width: 100%;
+  overflow: hidden !important; /* Force hidden overflow */
+  text-overflow: clip;
+  box-sizing: border-box;
+  max-height: 100%;
+  word-break: break-word;
+  clip-path: inset(0); /* Clip content to the span boundaries */
+  /* Ensure exact positioning */
+  backface-visibility: hidden;
+  /* Ensure text and selection align perfectly */
+  line-height: normal !important;
+  /* Prevent any margin or padding from affecting positioning */
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.text-layer ::selection {
+  background: rgba(0, 0, 255, 0.4);
+  /* Ensure selection stays within bounds */
+  overflow: hidden !important;
+  text-overflow: clip !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  box-sizing: border-box;
+  clip-path: inset(0); /* Clip selection to its container */
+  border-radius: 0; /* Ensure no rounded corners on selection */
+  /* Position selection exactly over text */
+  position: absolute;
+  /* Ensure selection aligns with text */
+  vertical-align: baseline !important;
+  /* Allow selection to capture pointer events */
+  pointer-events: auto;
+  /* Ensure selection matches text dimensions */
+  line-height: inherit !important;
+  /* Ensure exact positioning */
+  transform-origin: 0% 0% !important;
+}
+
+/* Compression tool styles */
+#compression-options {
+    display: none;
+    position: absolute;
+    right: 100%;
+    top: 0;
+    width: 200px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    z-index: 100;
+}
+
+#compression-options.active {
+    display: block;
+}
+
+.options-header {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+}
+
+.options-header h5 {
+    margin: 0;
+    font-size: 14px;
+}
+
+.options-list {
+    padding: 8px;
+}
+
+.option-button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 6px 8px;
+    margin-bottom: 4px;
+    border: none;
+    background: #f5f5f5;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.option-button:hover {
+    background: #e9e9e9;
+}
+
+.custom-option {
+    display: flex;
+    margin-top: 8px;
+}
+
+.input-with-label {
+    position: relative;
+    flex-grow: 1;
+    margin-right: 4px;
+}
+
+#custom-size {
+    width: 100%;
+    padding: 6px;
+    padding-right: 30px;
+}
+
+.input-label {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 12px;
+}
+
+#custom-size-btn {
+    padding: 6px 10px;
+}
+
+/* Loading indicator */
+#compression-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* PDF File Container Styles */
+.pdf-file-container {
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  /* box-shadow: 0 1px 3px rgba(0,0,0,0.12); */
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+
+
+.pdf-file-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid #eee;
+  background-color: #f8f9fa;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.pdf-file-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  flex-grow: 1;
+  margin-right: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pdf-file-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.action-button {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #666;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.rename-input {
+  width: 100%;
+  padding: 2px 4px;
+  border: 1px solid #2196F3;
+  border-radius: 3px;
+  font-size: 14px;
+  outline: none;
+}
+
+.pdf-file-container canvas {
+  width: 70%;
+  height: auto;
+  display: block;
+}
+
+.pdf-pages-thumbnails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.pdf-page-thumbnail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: all 0.2s ease;
+  padding: 8px;
+  margin-bottom: 8px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.pdf-page-thumbnail:hover {
+  border-color: #4a6cf7;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+.pdf-page-thumbnail.active {
+  border: 2px solid #4a6cf7;
+  background-color: #e3f2fd;
+  box-shadow: 0 4px 10px rgba(74, 108, 247, 0.2);
+}
+
+.pdf-page-thumbnail canvas {
+  border: 1px solid #f0f0f0;
+  background-color: #fafafa;
+}
+
+.page-number-label {
+  font-size: 12px;
+  color: #555;
+  margin-top: 6px;
+  font-weight: 500;
+  background-color: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 4px;
+  width: 100%;
+  text-align: center;
+}

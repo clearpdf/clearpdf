@@ -100,6 +100,21 @@
                         </div>
                     </div>
                 </div>
+                <!-- Add Batch Compression button -->
+                <button class="tool-button" id="batch-compress-tool" title="Batch Compress Multiple PDFs">
+                    <div class="tool-icon batch-compress-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                            <rect x="4" y="17" width="6" height="2"></rect>
+                            <rect x="14" y="17" width="6" height="2"></rect>
+                            <rect x="4" y="13" width="6" height="2"></rect>
+                            <rect x="14" y="13" width="6" height="2"></rect>
+                        </svg>
+                    </div>
+                    <span>Batch Compress</span>
+                </button>
                 <!-- <button class="tool-button" title="Split PDF">
                     <div class="tool-icon split-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -182,6 +197,11 @@
     <script src="./features/merge.js"></script>
     <!-- Add the compress.js script -->
     <script src="./features/compress.js"></script>
+    <!-- Add these lines to the head section of your HTML file -->
+    <link rel="stylesheet" href="styles/multi-upload.css">
+    
+    <!-- Add this line before the closing body tag, after compress.js -->
+    <script src="features/multi-upload.js"></script>
     <!-- Add the OCR script -->
     <!-- <script src="./features/ocr.js"></script> -->
     <!-- Add the Workflow script -->
